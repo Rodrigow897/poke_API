@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: -80,
         top: -25,
-        opacity: 0.08,
+        opacity: 0.1,
     },
     button:{
         zIndex: 2,
@@ -44,7 +44,51 @@ const styles = StyleSheet.create({
         left: 15,
         fontWeight: 'bold',
         fontSize: 20
-    }
+    },
+    resultContainer: {
+  flex: 1,
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 20,
+},
+listContainer: {
+  alignItems: 'center',
+  paddingBottom: 40,
+},
+card: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 20,
+  padding: 15,
+  margin: 8,
+  width: 150,
+  shadowColor: '#000',
+  shadowOpacity: 0.2,
+  shadowOffset: { width: 0, height: 2 },
+  shadowRadius: 5,
+  elevation: 3,
+},
+pokemonImage: {
+  width: 100,
+  height: 100,
+},
+pokemonName: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginTop: 5,
+  color: '#fff',
+  textShadowColor: '#0003',
+  textShadowOffset: { width: 1, height: 1 },
+  textShadowRadius: 2,
+},
+pokemonTypes: {
+  fontSize: 14,
+  color: '#fff',
+  marginTop: 3,
+  textTransform: 'capitalize',
+},
+
 });
 
 export default styles
