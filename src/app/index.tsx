@@ -19,7 +19,7 @@ interface Pokemon {
   types: string[];
 }
 
-// 🎨 Mapeamento de cores por tipo
+
 const typeColors: Record<string, string> = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -46,7 +46,7 @@ export default function Index() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Carrega lista inicial
+  //Carrega lista inicial
   async function loadPokemons() {
     try {
       setLoading(true);
@@ -73,7 +73,7 @@ export default function Index() {
     }
   }
 
-  // 🔹 Busca por nome
+  //Busca por nome
   async function handleSearch() {
     if (!search.trim()) {
       loadPokemons();
