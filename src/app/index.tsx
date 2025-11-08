@@ -1,14 +1,15 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import axios from 'axios';
 import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
@@ -18,7 +19,6 @@ interface Pokemon {
   image: string;
   types: string[];
 }
-
 
 const typeColors: Record<string, string> = {
   normal: '#A8A77A',
@@ -46,17 +46,17 @@ export default function Index() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(false);
 
-  //Carrega lista inicial
+  // Carrega lista inicial
   async function loadPokemons() {
     try {
       setLoading(true);
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20');
-      const data = await response.json();
+      const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20');
+      const results = response.data.results;
 
       const detailedData = await Promise.all(
-        data.results.map(async (p: { name: string; url: string }) => {
-          const res = await fetch(p.url);
-          const pokeData = await res.json();
+        results.map(async (p: { name: string; url: string }) => {
+          const res = await axios.get(p.url);
+          const pokeData = res.data;
           return {
             name: pokeData.name,
             image: pokeData.sprites.other['official-artwork'].front_default,
@@ -67,13 +67,14 @@ export default function Index() {
 
       setPokemons(detailedData);
     } catch (error) {
+      console.error(error);
       Alert.alert('Erro', 'Falha ao carregar os Pokémons.');
     } finally {
       setLoading(false);
     }
   }
 
-  //Busca por nome
+  // Busca por nome
   async function handleSearch() {
     if (!search.trim()) {
       loadPokemons();
@@ -82,10 +83,11 @@ export default function Index() {
 
     try {
       setLoading(true);
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`);
-      if (!response.ok) throw new Error('Pokémon não encontrado');
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
+      );
 
-      const data = await response.json();
+      const data = response.data;
       setPokemons([
         {
           name: data.name,
@@ -94,7 +96,8 @@ export default function Index() {
         },
       ]);
     } catch (error) {
-      Alert.alert('Erro', error instanceof Error ? error.message : 'Erro inesperado');
+      console.error(error);
+      Alert.alert('Erro', 'Pokémon não encontrado');
       setPokemons([]);
     } finally {
       setLoading(false);
